@@ -1,0 +1,32 @@
+{
+  "name": "nytimesreact",
+  "version": "1.0.0",
+  "description": "A New York Times Article Search",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Monica Szabo",
+  "license": "ISC",
+  "engines": {
+    "node": "4.4.7"
+  },
+  "dependencies": {
+    "axios": "^0.12.0",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.10",
+    "morgan": "^1.7.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "request": "^2.72.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.13",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "json-loader": "^0.5.4",
+    "webpack": "^1.13.1"
+  }
+}
