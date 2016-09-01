@@ -24,7 +24,7 @@ var Results = React.createClass({
 		var that = this;
 		var myResults = nextProps.results.map(function(search, i){
 			var boundClick = that.clickToSave.bind(that, search);
-			return <div className="list-group-item" key={i}>{search.headline.main}<br />{search.pub_date}<br />{search.web_url}<br /><button type="button" className="btn btn-primary" onClick={boundClick}>Save</button></div>
+			return <div className="list-group-item" key={i}>{search.headline.main}<br />{search.pub_date}<br />{search.web_url}<br /><button type="button" className="btn btn-warning" style={{'float': 'right', 'marginTop': '-46px'}} onClick={boundClick}>Save</button></div>
 		});
 
 		this.setState({results: myResults});
@@ -34,7 +34,7 @@ var Results = React.createClass({
 	render: function(){
 		return(
 
-			<div className="panel panel-default">
+			<div className="panel panel-warning">
 				<div className="panel-heading">
 					<h3 className="panel-title text-center"><strong>Results</strong></h3>
 				</div>

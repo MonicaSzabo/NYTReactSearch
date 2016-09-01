@@ -36,7 +36,7 @@ var Form = React.createClass({
 
 		return(
 
-			<div className="panel panel-default">
+			<div className="panel panel-primary">
 				<div className="panel-heading">
 					<h2 className="panel-title text-center"><strong>Search</strong></h2>
 				</div>
