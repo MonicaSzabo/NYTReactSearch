@@ -37,6 +37,16 @@ var Main = React.createClass({
 
 	saveArticle: function(title, date, url){
 		helpers.postArticle(title, date, url);
+		this.getArticle();
+	},
+
+	getArticle: function(){
+		axios.get('/api/saved')
+			.then(function(response){
+				this.setState({
+					savedArticles: response.data
+				});
+			}.bind(this));
 	},
 
 	// If the component updates we'll run this code
@@ -50,34 +60,15 @@ var Main = React.createClass({
 					console.log(data);
 					if (data != this.state.results)
 					{
-						// console.log("this is Data HERE");
-
-						// for(var i = 0; i < data.length; i++) {
-							
-						// }
-						// console.log(data[0].headline.main);
-						// console.log(data[0].pub_date);
-						// console.log(data[0].web_url);
-
 						this.setState({
 							results: data
 						})
 					}
-
-
-
-
-				// This code is necessary to bind the keyword "this" when we say this.setState 
-				// to actually mean the component itself and not the runQuery function.
-				}.bind(this))		
+				}.bind(this))
 		}
 	},
 
 	componentDidMount: function(){
-		console.log("COMPONENT MOUNTED");
-
-		// The moment the page renders on page load, we will retrieve the previous click count.
-		// We will then utilize that click count to change the value of the click state.
 		axios.get('/api/saved')
 			.then(function(response){
 				this.setState({
@@ -121,5 +112,4 @@ var Main = React.createClass({
 	}
 });
 
-// Export the componen back for use in other files
 module.exports = Main;

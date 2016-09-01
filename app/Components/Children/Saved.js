@@ -13,12 +13,12 @@ var Saved = React.createClass({
 				<div className="panel-heading">
 					<h3 className="panel-title text-center"><strong>Saved Articles</strong></h3>
 				</div>
-				<div className="panel-body text-center">
+				<div className="panel-body">
 
 					{/* Here we use a map function to loop through an array in JSX*/}
 					{this.props.savedArticles.map(function(search, i)
 						{
-							return <p key={i}>{search.location} - {search.date}</p> 
+							return <div className="list-group-item" key={i}>{search.title}<br />{search.date}<br />{search.url}<br /><button type="button" className="btn btn-primary">Delete</button></div>
 						}
 					)}
 				</div>

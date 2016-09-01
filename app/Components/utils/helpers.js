@@ -20,7 +20,12 @@ var helpers = {
 				var counter = 0;
 
 				//Gets first 5 articles that have all 3 components
-				while(counter < 5) {
+				for(var i = 0; i < fullResults.length; i++){
+
+					if(counter > 4) {
+						return newResults;
+					}
+
 					if(fullResults[counter].headline.main && fullResults[counter].pub_date && fullResults[counter].web_url) {
 						newResults.push(fullResults[counter]);
 						counter++;
@@ -32,19 +37,11 @@ var helpers = {
 
 	},
 
-	getArticle: function(){
-
-		return axios.get('/api/saved')
-			.then(function(response){
-
-				return response;
-			});
-	},
 
 	// This function posts saved articles to our database.
 	postArticle: function(title, date, url){
 
-		return axios.post('/api/saved', {title: title, date: date, url: url})
+		axios.post('/api/saved', {title: title, date: date, url: url})
 		.then(function(results){
 
 			console.log("Posted to MongoDB");

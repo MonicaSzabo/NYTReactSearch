@@ -19776,6 +19776,15 @@
 
 		saveArticle: function saveArticle(title, date, url) {
 			helpers.postArticle(title, date, url);
+			this.getArticle();
+		},
+
+		getArticle: function getArticle() {
+			axios.get('/api/saved').then(function (response) {
+				this.setState({
+					savedArticles: response.data
+				});
+			}.bind(this));
 		},
 
 		// If the component updates we'll run this code
@@ -19787,31 +19796,15 @@
 				helpers.runQuery(this.state.topic, this.state.startYear, this.state.endYear).then(function (data) {
 					console.log(data);
 					if (data != this.state.results) {
-						// console.log("this is Data HERE");
-
-						// for(var i = 0; i < data.length; i++) {
-
-						// }
-						// console.log(data[0].headline.main);
-						// console.log(data[0].pub_date);
-						// console.log(data[0].web_url);
-
 						this.setState({
 							results: data
 						});
 					}
-
-					// This code is necessary to bind the keyword "this" when we say this.setState 
-					// to actually mean the component itself and not the runQuery function.
 				}.bind(this));
 			}
 		},
 
 		componentDidMount: function componentDidMount() {
-			console.log("COMPONENT MOUNTED");
-
-			// The moment the page renders on page load, we will retrieve the previous click count.
-			// We will then utilize that click count to change the value of the click state.
 			axios.get('/api/saved').then(function (response) {
 				this.setState({
 					savedArticles: response.data
@@ -19861,7 +19854,6 @@
 		}
 	});
 
-	// Export the componen back for use in other files
 	module.exports = Main;
 
 /***/ },
@@ -21216,7 +21208,7 @@
 
 		// When a user clicks save article
 		clickToSave: function clickToSave(result) {
-			debugger;
+
 			this.props.saveArticle(result.headline.main, result.pub_date, result.web_url);
 		},
 
@@ -21308,14 +21300,22 @@
 				),
 				React.createElement(
 					"div",
-					{ className: "panel-body text-center" },
+					{ className: "panel-body" },
 					this.props.savedArticles.map(function (search, i) {
 						return React.createElement(
-							"p",
-							{ key: i },
-							search.location,
-							" - ",
-							search.date
+							"div",
+							{ className: "list-group-item", key: i },
+							search.title,
+							React.createElement("br", null),
+							search.date,
+							React.createElement("br", null),
+							search.url,
+							React.createElement("br", null),
+							React.createElement(
+								"button",
+								{ type: "button", className: "btn btn-primary" },
+								"Delete"
+							)
 						);
 					})
 				)
@@ -21353,7 +21353,12 @@
 				var counter = 0;
 
 				//Gets first 5 articles that have all 3 components
-				while (counter < 5) {
+				for (var i = 0; i < fullResults.length; i++) {
+
+					if (counter > 4) {
+						return newResults;
+					}
+
 					if (fullResults[counter].headline.main && fullResults[counter].pub_date && fullResults[counter].web_url) {
 						newResults.push(fullResults[counter]);
 						counter++;
@@ -21364,18 +21369,10 @@
 			});
 		},
 
-		getArticle: function getArticle() {
-
-			return axios.get('/api/saved').then(function (response) {
-
-				return response;
-			});
-		},
-
 		// This function posts saved articles to our database.
 		postArticle: function postArticle(title, date, url) {
 
-			return axios.post('/api/saved', { title: title, date: date, url: url }).then(function (results) {
+			axios.post('/api/saved', { title: title, date: date, url: url }).then(function (results) {
 
 				console.log("Posted to MongoDB");
 				return results;
