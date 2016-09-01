@@ -32,7 +32,7 @@ app.get('/', function(req, res){
   res.sendFile('./public/index.html');
 })
 
-app.get('/api/', function(req, res) {
+app.get('/api/saved', function(req, res) {
 
   // This GET request will search for the latest clickCount
   Article.find({})
@@ -47,31 +47,35 @@ app.get('/api/', function(req, res) {
     })
 });
 
-app.post('/api/', function(req, res){
-  var newArticle = new Article(req.body);
+app.post('/api/saved', function(req, res){
 
+  var newArticle = new Article({
+    title: req.body.title,
+    date: req.body.date,
+    url: req.body.url
+  });
 
   // var results = req.body.results;
   // var searchTerm = req.body.searchTerm;
 
   // Note how this route utilizes the findOneAndUpdate function to update the clickCount.
-  // newArticle.save(function(err, doc){
+  newArticle.save(function(err, doc){
 
-  //   if(err){
-  //     console.log(err);
-  //   }
-  //   else{
-        
-  //   }
-  // });
-
-  Article.create({'topic': req.body.topic, 'date': req.body.date, 'url':req.body.url}).exec(function(err, doc){
-    if(err) {
+    if(err){
       console.log(err);
+      res.send(err);
     } else {
-      res.send(doc);
+      res.json(doc);
     }
-  })
+
+  });
+
+  //   else{
+    //       Article.create({'title': req.body.title, 'date': req.body.date, 'url':req.body.url}).exec(function(err, doc){
+    //   if(err) {
+    //     console.log(err);
+    //   }
+
 
 });
 

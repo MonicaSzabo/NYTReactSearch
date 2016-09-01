@@ -19774,8 +19774,8 @@
 			});
 		},
 
-		saveArticle: function saveArticle(tpc, stYr, endYr) {
-			helpers.postArticle();
+		saveArticle: function saveArticle(title, date, url) {
+			helpers.postArticle(title, date, url);
 		},
 
 		// If the component updates we'll run this code
@@ -19785,6 +19785,7 @@
 				console.log("UPDATED");
 
 				helpers.runQuery(this.state.topic, this.state.startYear, this.state.endYear).then(function (data) {
+					console.log(data);
 					if (data != this.state.results) {
 						// console.log("this is Data HERE");
 
@@ -19811,7 +19812,7 @@
 
 			// The moment the page renders on page load, we will retrieve the previous click count.
 			// We will then utilize that click count to change the value of the click state.
-			axios.get('/api').then(function (results) {
+			axios.get('/api/saved').then(function (response) {
 				this.setState({
 					savedArticles: response.data
 				});
@@ -19820,7 +19821,6 @@
 
 		// Here we render the function
 		render: function render() {
-
 			return React.createElement(
 				'div',
 				{ className: 'container' },
@@ -19850,7 +19850,7 @@
 				React.createElement(
 					'div',
 					{ className: 'row' },
-					React.createElement(Results, { results: this.state.results })
+					React.createElement(Results, { results: this.state.results, saveArticle: this.saveArticle })
 				),
 				React.createElement(
 					'div',
@@ -21209,14 +21209,39 @@
 			return {
 				title: "",
 				date: "",
-				url: ""
+				url: "",
+				results: []
 			};
 		},
 
 		// When a user clicks save article
-		handleClick: function handleClick() {
+		clickToSave: function clickToSave(result) {
+			debugger;
+			this.props.saveArticle(result.headline.main, result.pub_date, result.web_url);
+		},
 
-			this.props.saveArticle(this.state.title, this.state.date, this.state.url);
+		componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+			var that = this;
+			var myResults = nextProps.results.map(function (search, i) {
+				var boundClick = that.clickToSave.bind(that, search);
+				return React.createElement(
+					"div",
+					{ className: "list-group-item", key: i },
+					search.headline.main,
+					React.createElement("br", null),
+					search.pub_date,
+					React.createElement("br", null),
+					search.web_url,
+					React.createElement("br", null),
+					React.createElement(
+						"button",
+						{ type: "button", className: "btn btn-primary", onClick: boundClick },
+						"Save"
+					)
+				);
+			});
+
+			this.setState({ results: myResults });
 		},
 
 		// Here we render the function
@@ -21240,23 +21265,7 @@
 				React.createElement(
 					"div",
 					{ className: "panel-body" },
-					this.props.results.map(function (search, i) {
-						return React.createElement(
-							"div",
-							{ className: "list-group-item", key: i },
-							search.headline.main,
-							React.createElement("br", null),
-							search.pub_date,
-							React.createElement("br", null),
-							search.web_url,
-							React.createElement("br", null),
-							React.createElement(
-								"button",
-								{ className: "btn btn-primary" },
-								"Save"
-							)
-						);
-					})
+					this.state.results
 				)
 			);
 		}
@@ -21355,15 +21364,13 @@
 			});
 		},
 
-		// getHistory: function(){
+		getArticle: function getArticle() {
 
-		// 	return axios.get('/api')
-		// 		.then(function(response){
+			return axios.get('/api/saved').then(function (response) {
 
-		// 			console.log(response);
-		// 			return response;
-		// 		});
-		// },
+				return response;
+			});
+		},
 
 		// This function posts saved articles to our database.
 		postArticle: function postArticle(title, date, url) {

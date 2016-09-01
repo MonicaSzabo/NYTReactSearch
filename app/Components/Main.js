@@ -35,8 +35,8 @@ var Main = React.createClass({
 		})
 	},
 
-	saveArticle: function(tpc, stYr, endYr){
-		helpers.postArticle();
+	saveArticle: function(title, date, url){
+		helpers.postArticle(title, date, url);
 	},
 
 	// If the component updates we'll run this code
@@ -47,6 +47,7 @@ var Main = React.createClass({
 
 			helpers.runQuery(this.state.topic, this.state.startYear, this.state.endYear)
 				.then(function(data){
+					console.log(data);
 					if (data != this.state.results)
 					{
 						// console.log("this is Data HERE");
@@ -77,8 +78,8 @@ var Main = React.createClass({
 
 		// The moment the page renders on page load, we will retrieve the previous click count.
 		// We will then utilize that click count to change the value of the click state.
-		axios.get('/api')
-			.then(function(results){
+		axios.get('/api/saved')
+			.then(function(response){
 				this.setState({
 					savedArticles: response.data
 				});
@@ -87,7 +88,6 @@ var Main = React.createClass({
 
 	// Here we render the function
 	render: function(){
-
 		return(
 
 			<div className="container">
@@ -107,7 +107,7 @@ var Main = React.createClass({
 
 				<div className="row">
 			
-					<Results results={this.state.results} />
+					<Results results={this.state.results} saveArticle={this.saveArticle}/>
 
 				</div>
 

@@ -32,15 +32,14 @@ var helpers = {
 
 	},
 
-	// getHistory: function(){
+	getArticle: function(){
 
-	// 	return axios.get('/api')
-	// 		.then(function(response){
+		return axios.get('/api/saved')
+			.then(function(response){
 
-	// 			console.log(response);
-	// 			return response;
-	// 		});
-	// },
+				return response;
+			});
+	},
 
 	// This function posts saved articles to our database.
 	postArticle: function(title, date, url){
