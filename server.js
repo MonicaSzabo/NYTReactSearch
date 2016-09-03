@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var Article = require('./models/Article.js');
 
 var app = express();
-var PORT = process.env.PORT || 3000; // Sets an initial port. We'll use this later in our listener
+var PORT = process.env.PORT || 3000;
 
 // Run Morgan for Logging
 app.use(logger('dev'));
@@ -34,7 +34,6 @@ app.get('/', function(req, res){
 
 app.get('/api/saved', function(req, res) {
 
-  // This GET request will search for the latest clickCount
   Article.find({})
     .exec(function(err, doc){
 
@@ -55,27 +54,25 @@ app.post('/api/saved', function(req, res){
     url: req.body.url
   });
 
-  // var results = req.body.results;
-  // var searchTerm = req.body.searchTerm;
-
-  // Note how this route utilizes the findOneAndUpdate function to update the clickCount.
   newArticle.save(function(err, doc){
-
     if(err){
       console.log(err);
       res.send(err);
     } else {
       res.json(doc);
     }
-
   });
 
-  //   else{
-    //       Article.create({'title': req.body.title, 'date': req.body.date, 'url':req.body.url}).exec(function(err, doc){
-    //   if(err) {
-    //     console.log(err);
-    //   }
+});
 
+app.delete('/api/saved', function(req, res){
+
+  console.log(req.params.id);
+
+  Article.find({'_id': req.params.id}).remove()
+    .exec(function(err, doc) {
+      res.send(doc);
+  });
 
 });
 

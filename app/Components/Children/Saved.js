@@ -4,6 +4,29 @@ var React = require('react');
 // This is the saved component. It will be used to show a log of saved articles.
 var Saved = React.createClass({
 
+	getInitialState: function(){
+		return {
+			savedArticles: []
+		}
+	},
+
+	clickToDelete: function(result){
+
+		this.props.deleteArticle(result);
+
+	},
+
+	componentWillReceiveProps: function(nextProps){
+		var that = this;
+		console.log(nextProps);
+		var myResults = nextProps.savedArticles.map(function(search, i){
+			var boundClick = that.clickToDelete.bind(that, search);
+			return <div className="list-group-item" key={i}>{search.title}<br />{search.date}<br />{search.url}<br /><button type="button" className="btn btn-success" style={{'float': 'right', 'marginTop': '-46px'}} onClick={boundClick}>Delete</button></div>
+		});
+
+		this.setState({savedArticles: myResults});
+	},
+
 	// Here we render the function
 	render: function(){
 
@@ -16,11 +39,7 @@ var Saved = React.createClass({
 				<div className="panel-body">
 
 					{/* Here we use a map function to loop through an array in JSX*/}
-					{this.props.savedArticles.map(function(search, i)
-						{
-							return <div className="list-group-item" key={i}>{search.title}<br />{search.date}<br />{search.url}<br /><button type="button" className="btn btn-success" style={{'float': 'right', 'marginTop': '-46px'}}>Delete</button></div>
-						}
-					)}
+					{this.state.savedArticles}
 				</div>
 			</div>
 

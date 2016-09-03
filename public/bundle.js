@@ -19779,6 +19779,16 @@
 			this.getArticle();
 		},
 
+		deleteArticle: function deleteArticle() {
+
+			axios.delete('/api/saved').then(function (response) {
+				this.setState({
+					savedArticles: response.data
+				});
+			}.bind(this));
+			this.getArticle();
+		},
+
 		getArticle: function getArticle() {
 			axios.get('/api/saved').then(function (response) {
 				this.setState({
@@ -19806,6 +19816,7 @@
 
 		componentDidMount: function componentDidMount() {
 			axios.get('/api/saved').then(function (response) {
+				debugger;
 				this.setState({
 					savedArticles: response.data
 				});
@@ -19848,7 +19859,7 @@
 				React.createElement(
 					'div',
 					{ className: 'row' },
-					React.createElement(Saved, { savedArticles: this.state.savedArticles })
+					React.createElement(Saved, { savedArticles: this.state.savedArticles, deleteArticle: this.deleteArticle })
 				)
 			);
 		}
@@ -21279,6 +21290,43 @@
 	var Saved = React.createClass({
 		displayName: "Saved",
 
+
+		getInitialState: function getInitialState() {
+			return {
+				savedArticles: []
+			};
+		},
+
+		clickToDelete: function clickToDelete(result) {
+
+			this.props.deleteArticle(result);
+		},
+
+		componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+			var that = this;
+			console.log(nextProps);
+			var myResults = nextProps.savedArticles.map(function (search, i) {
+				var boundClick = that.clickToDelete.bind(that, search);
+				return React.createElement(
+					"div",
+					{ className: "list-group-item", key: i },
+					search.title,
+					React.createElement("br", null),
+					search.date,
+					React.createElement("br", null),
+					search.url,
+					React.createElement("br", null),
+					React.createElement(
+						"button",
+						{ type: "button", className: "btn btn-success", style: { 'float': 'right', 'marginTop': '-46px' }, onClick: boundClick },
+						"Delete"
+					)
+				);
+			});
+
+			this.setState({ savedArticles: myResults });
+		},
+
 		// Here we render the function
 		render: function render() {
 
@@ -21301,23 +21349,7 @@
 				React.createElement(
 					"div",
 					{ className: "panel-body" },
-					this.props.savedArticles.map(function (search, i) {
-						return React.createElement(
-							"div",
-							{ className: "list-group-item", key: i },
-							search.title,
-							React.createElement("br", null),
-							search.date,
-							React.createElement("br", null),
-							search.url,
-							React.createElement("br", null),
-							React.createElement(
-								"button",
-								{ type: "button", className: "btn btn-success", style: { 'float': 'right', 'marginTop': '-46px' } },
-								"Delete"
-							)
-						);
-					})
+					this.state.savedArticles
 				)
 			);
 		}

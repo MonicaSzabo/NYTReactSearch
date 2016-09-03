@@ -40,6 +40,17 @@ var Main = React.createClass({
 		this.getArticle();
 	},
 
+	deleteArticle: function(){
+
+		axios.delete('/api/saved')
+			.then(function(response){
+				this.setState({
+					savedArticles: response.data
+				});
+			}.bind(this));
+		this.getArticle();
+	},
+
 	getArticle: function(){
 		axios.get('/api/saved')
 			.then(function(response){
@@ -71,6 +82,7 @@ var Main = React.createClass({
 	componentDidMount: function(){
 		axios.get('/api/saved')
 			.then(function(response){
+				debugger;
 				this.setState({
 					savedArticles: response.data
 				});
@@ -104,7 +116,7 @@ var Main = React.createClass({
 
 				<div className="row">
 				
-					<Saved savedArticles={this.state.savedArticles} />
+					<Saved savedArticles={this.state.savedArticles} deleteArticle={this.deleteArticle} />
 
 				</div>
 			</div>
