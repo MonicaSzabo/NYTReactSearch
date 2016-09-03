@@ -21230,15 +21230,17 @@
 				return React.createElement(
 					"div",
 					{ className: "list-group-item", key: i },
-					search.headline.main,
+					React.createElement(
+						"a",
+						{ href: search.web_url, target: "_blank" },
+						search.headline.main
+					),
 					React.createElement("br", null),
 					search.pub_date,
 					React.createElement("br", null),
-					search.web_url,
-					React.createElement("br", null),
 					React.createElement(
 						"button",
-						{ type: "button", className: "btn btn-warning", style: { 'float': 'right', 'marginTop': '-46px' }, onClick: boundClick },
+						{ type: "button", className: "btn btn-warning", style: { 'float': 'right', 'marginTop': '-39px' }, onClick: boundClick },
 						"Save"
 					)
 				);
@@ -21310,15 +21312,17 @@
 				return React.createElement(
 					"div",
 					{ className: "list-group-item", key: i },
-					search.title,
+					React.createElement(
+						"a",
+						{ href: search.url, target: "_blank" },
+						search.title
+					),
 					React.createElement("br", null),
 					search.date,
 					React.createElement("br", null),
-					search.url,
-					React.createElement("br", null),
 					React.createElement(
 						"button",
-						{ type: "button", className: "btn btn-success", style: { 'float': 'right', 'marginTop': '-46px' }, onClick: boundClick },
+						{ type: "button", className: "btn btn-success", style: { 'float': 'right', 'marginTop': '-39px' }, onClick: boundClick },
 						"Delete"
 					)
 				);
