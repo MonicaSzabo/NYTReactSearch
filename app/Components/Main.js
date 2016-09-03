@@ -41,15 +41,14 @@ var Main = React.createClass({
 	},
 
 	deleteArticle: function(article){
-		return axios.delete('/api/saved/' + article._id)
+		console.log(article);
+		axios.delete('/api/saved/' + article._id)
 			.then(function(response){
 				this.setState({
 					savedArticles: response.data
 				});
 				return response;
 			}.bind(this));
-
-			function(article){
 
 		this.getArticle();
 	},
