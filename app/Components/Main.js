@@ -82,7 +82,6 @@ var Main = React.createClass({
 	componentDidMount: function(){
 		axios.get('/api/saved')
 			.then(function(response){
-				debugger;
 				this.setState({
 					savedArticles: response.data
 				});

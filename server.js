@@ -67,7 +67,8 @@ app.post('/api/saved', function(req, res){
 
 app.delete('/api/saved', function(req, res){
 
-  console.log(req.params.id);
+  //console.log(req.params.id);
+  console.log(req.body.id);
 
   Article.find({'_id': req.params.id}).remove()
     .exec(function(err, doc) {
