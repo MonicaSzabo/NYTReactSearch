@@ -11,7 +11,6 @@ var Saved = React.createClass({
 	},
 
 	clickToDelete: function(result){
-
 		this.props.deleteArticle(result);
 
 	},
