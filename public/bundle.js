@@ -19838,7 +19838,7 @@
 						React.createElement(
 							'h2',
 							{ className: 'text-center', style: { 'color': 'white', 'textShadow': '3px 3px 10px black', 'fontSize': '54px' } },
-							'New York Times Article Scrubber'
+							'New York Times Article Search and Save'
 						),
 						React.createElement(
 							'p',
